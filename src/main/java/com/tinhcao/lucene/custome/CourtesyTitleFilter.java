@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.lucene.analysis.CharacterUtils;
 import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
@@ -25,6 +26,7 @@ public class CourtesyTitleFilter extends TokenFilter {
 	public final boolean incrementToken() throws IOException {
 		if (!input.incrementToken())
 			return false;
+		CharacterUtils.toLowerCase(charTermAttribute.buffer(), 0, charTermAttribute.length());
 		String small = charTermAttribute.toString();
 		if (courtesyTitleMap.containsKey(small)) {
 			charTermAttribute.setEmpty().append(courtesyTitleMap.get(small));
